@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
-      - name: Install SSH key
+      - name: Set key 
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} 
       
