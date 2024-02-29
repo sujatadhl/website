@@ -11,15 +11,6 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       
-      - name: Set key 
-        uses : ./
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} 
-      
-      - name: Deploy 
-        run: |
-          scp -r * root@143.244.139.100:/var/www/html 
-          ssh  root@143.244.139.100 "sudo systemctl restart apache2" 
        
