@@ -11,16 +11,11 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Build and Deploy
-        run: |
-          mkdir -p public
-          cp -r * public/
-        working-directory: C:/Users/dahal/Desktop/website
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+         uses: actions/checkout@v2
+         with:
+          ssh-private-key: ${{ secrets.SSH_Key }}
+        -run: 
+          https://github.com/sujatadhl/website.git
+            
+          
+                       
