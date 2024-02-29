@@ -14,6 +14,7 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Set key 
+        uses : ./
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} 
       
