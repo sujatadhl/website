@@ -10,12 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-         uses: actions/checkout@v2
-         with:
-          ssh-private-key: ${{ secrets.SSH_Key }}
-        -run: 
-          https://github.com/sujatadhl/website.git
-            
-          
-                       
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_Key }} 
+      
+      - name: Deploy 
+        run: |
+          scp -r * root@143.244.139.100:/var/www/html 
+          ssh  root@143.244.139.100 "sudo systemctl restart apache2" 
+       
