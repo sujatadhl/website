@@ -1,15 +1,28 @@
-name: Deploy
-
+name: Build and Deploy
 on:
   push:
-    branches: [ main ] 
-
+    branches:
+      - master
 jobs:
-  build:
-  
+  build-and-deploy:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        node-version: [12.x]
     steps:
-      - uses: actions/checkout@v4
-      
-       
+      - uses: actions/checkout@master
+      - name: Deploy
+        run: |
+          which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y  )
+          which rsync || ( apt-get update -y && apt-get install rsync -y )
+          eval $(ssh-agent -s)
+          ssh-add <(echo "$SSH_PRIVATE_KEY" )
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan $SERVER_IP >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+          scp -r * root@$SERVER_IP:/var/www/html
+    env:
+      SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+      SERVER_IP: ${{secrets.HOST}}
+      CI: false
